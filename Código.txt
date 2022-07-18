@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package principal;
 
 import java.io.BufferedReader;
@@ -82,6 +87,7 @@ public class Ventana extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jButton2.setText("Análisis sintáctico y semántico");
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -528,16 +534,18 @@ public class Ventana extends javax.swing.JFrame {
         Error.setText("");
 
         if (txtATexto1.getText().matches(main)) {
-
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
+
                 if (st.hasMoreTokens()) {
                     token = token + st.nextToken();
                 }
+
                 if (token.matches("[.\\W\\w\\s]*(\\})") && st.countTokens() == 1) {
                     String auxTok = st.nextToken();
                     token = token + (auxTok.substring(0, auxTok.indexOf("\n")));
                 }
+
                 StringTokenizer lin = new StringTokenizer(token, "\n", true);
                 while (lin.hasMoreTokens()) {
                     e = lin.nextToken();
@@ -549,21 +557,27 @@ public class Ventana extends javax.swing.JFrame {
                 if (token.matches(start2)) {
                     start++;
                 }
+
                 if (token.matches(start3)) {
                     start--;
                 }
+
                 if (token.matches(when2)) {
                     when++;
                 }
+
                 if (token.matches(when3)) {
                     when--;
                 }
+
                 if (token.matches(it2)) {
                     it++;
                 }
+
                 if (token.matches(it3)) {
                     it--;
                 }
+
                 if ((st.hasMoreTokens() == false && (start > 0 || when > 0 || it > 0)) || (start < 0 || when < 0 || it < 0)) {
                     eB = 1;
                 }
@@ -577,10 +591,8 @@ public class Ventana extends javax.swing.JFrame {
                         String tipo = stTipo.nextToken();
 
                         if (tipo.contains("NUM")) {
-
                             while (stTipo.hasMoreTokens()) {
                                 tipo = stTipo.nextToken();
-
                                 if (ENT.contains(tipo) || DEC.contains(tipo) || TEXT.contains(tipo) || TAKE.contains(tipo)) {
                                     Error.setText("La Variable esta repetida (" + tipo + ") " + i + ": \n"
                                             + "________________________________________________________________________\n" + token);
@@ -591,15 +603,13 @@ public class Ventana extends javax.swing.JFrame {
                                     errores = 1;
                                     break;
                                 }
-
                                 ENT.add(tipo);
                             }
                         }
-                        if (tipo.contains("DNUM")) {
 
+                        if (tipo.contains("DNUM")) {
                             while (stTipo.hasMoreTokens()) {
                                 tipo = stTipo.nextToken();
-
                                 if (ENT.contains(tipo) || DEC.contains(tipo) || TEXT.contains(tipo) || TAKE.contains(tipo)) {
                                     Error.setText("La Variable esta repetida (" + tipo + ") " + i + ": \n"
                                             + "________________________________________________________________________\n" + token);
@@ -610,34 +620,13 @@ public class Ventana extends javax.swing.JFrame {
                                     errores = 1;
                                     break;
                                 }
-
                                 DEC.add(tipo);
                             }
                         }
-                        if (tipo.contains("TAKE")) {
 
-                            while (stTipo.hasMoreTokens()) {
-                                tipo = stTipo.nextToken();
-
-                                if (ENT.contains(tipo) || DEC.contains(tipo) || TEXT.contains(tipo) || TAKE.contains(tipo)) {
-                                    Error.setText("La Variable esta repetida (" + tipo + ") " + i + ": \n"
-                                            + "________________________________________________________________________\n" + token);
-                                    for (int j = 1; j < i; j++) {
-                                        txt += "\n";
-                                    }
-                                    LineaError.setText(txt + " ¡!");
-                                    errores = 1;
-                                    break;
-                                }
-
-                                TAKE.add(tipo);
-                            }
-                        }
                         if (tipo.contains("WORD")) {
-
                             while (stTipo.hasMoreTokens()) {
                                 tipo = stTipo.nextToken();
-
                                 if (ENT.contains(tipo) || DEC.contains(tipo) || TEXT.contains(tipo) || TAKE.contains(tipo)) {
                                     Error.setText("La variable esta repetida (" + tipo + ") " + i + ": \n"
                                             + "________________________________________________________________________\n" + token);
@@ -648,15 +637,15 @@ public class Ventana extends javax.swing.JFrame {
                                     errores = 1;
                                     break;
                                 }
-
                                 TEXT.add(tipo);
                             }
                         }
                     }
+
                     if (token.matches(defVal)) {
                         StringTokenizer stComprobar = new StringTokenizer(token, " \n\t=;");
                         String ID = stComprobar.nextToken(), comprobar = "", tok = "";
-                        //System.out.print(ID);
+
                         while (stComprobar.hasMoreTokens()) {
                             comprobar += stComprobar.nextToken();
                         }
@@ -898,7 +887,7 @@ public class Ventana extends javax.swing.JFrame {
                 }
 
                 if ((token.matches(send) || token.matches(take) || token.matches(var) || token.matches(defVal) || token.matches(main2) || token.matches(main3) || token.matches("(\\s)*(\\$)") || token.matches(start2) || token.matches(start3) || token.matches(when2) || token.matches(when3) || token.matches(it2) || token.matches(it3)) && eB == 0) {
-                    Error.setText("Compilado Exitosamente xD lml");
+                    Error.setText("¡Compilado Exitosamente!");
                     if (token.matches(main3)) {
                         eB = 1;
                     }
@@ -1015,30 +1004,31 @@ public class Ventana extends javax.swing.JFrame {
                 errores = 1;
             }
         }
-        
+
         if (errores == 1) {
             btnTraducir.setEnabled(false);
+            errores = 0;
         } else {
             btnTraducir.setEnabled(true);
+            errores = 0;
         }
     }                                        
 
     private void btnTraducirActionPerformed(java.awt.event.ActionEvent evt) {                                            
         txtATraducido.setText("");
+        
         String simbolo = "([=<>])",
                 id = "([(a-z)(A-Z)](\\w)*)",
                 num = "((\\d)+)",
                 dec = "((\\d)+(\\.)(\\d)+)",
                 text = "((((#)[.\\W\\w\\s]*(#))|(" + id + "))((\\s)*(\\+)((\\s)*((#)[.\\W\\w\\s]*(#))|(" + id + ")))*)",
                 send = "((\\s)*SEND(\\s)*(\\()(\\s)*((((#)[.\\W\\w\\s]*(#))|(" + id + "))((\\s)*(\\+)((\\s)*((#)[.\\W\\w\\s]*(#))|(" + id + ")))*)(\\s)*(\\))(\\s)*(;))",
-                //take = "((\\s)*TAKE(\\b)(\\s)*"+id+"((\\s)*(,(\\s)*"+id+"))*(\\s)*(;))",
                 take = "((\\s)*TAKE(\\s)*(\\()(\\s)*((((#)[.\\W\\w\\s]*(#))|(" + id + "))((\\s)*(\\+)((\\s)*((#)[.\\W\\w\\s]*(#))|(" + id + ")))*)(\\s)*(\\))(\\s)*(;))",
                 operaciones = "((" + id + "|" + num + "|" + dec + ")(\\s)*([+-/*](\\s)*(" + id + "|" + num + "|" + dec + "))+)",
                 defVal = "((\\s)*" + id + "(\\s)*=(\\s)*(" + id + "|" + text + "|" + operaciones + "|" + num + "|" + dec + ")(\\s)*(;))",
                 defValVar = "((\\s)*" + id + "(\\s)*=(\\s)*(" + id + "|" + text + "|" + operaciones + "|" + num + "|" + dec + ")(\\s)*)",
                 condicion = id + "(\\s)*" + simbolo + "(\\s)*(" + id + "|" + num + "|" + dec + ")((\\s)*([(&&)(||)](\\s)*" + id + "(\\s)*" + simbolo + "(\\s)*(" + id + "|" + num + "|" + dec + ")))*",
-                var = "((\\s)*((DNUM)|(WORD))(\\b)(\\s)*(" + id + "|" + defValVar + ")((\\s)*(,(\\s)*(" + id + "|" + defValVar + ")))*(\\s)*(;))",
-                var2 = "((\\s)*((NUM))(\\b)(\\s)*(" + id + "|" + defValVar + ")((\\s)*(,(\\s)*(" + id + "|" + defValVar + ")))*(\\s)*(;))",
+                var = "((\\s)*((NUM)|(DNUM)|(WORD))(\\b)(\\s)*(" + id + "|" + defValVar + ")((\\s)*(,(\\s)*(" + id + "|" + defValVar + ")))*(\\s)*(;))",
                 main = "((\\s)*" + id + "txtATraducidoBEGIN(\\s)*(\\{)[.\\W\\w\\s]*(END(\\s)*(\\})(\\s)*)$)",
                 main2 = "((\\s)*" + id + "(\\b)(\\s)*BEGIN(\\s)*(\\{))",
                 main3 = "((\\s)*END(\\s)*(\\})(\\s)*)",
@@ -1057,7 +1047,6 @@ public class Ventana extends javax.swing.JFrame {
         StringTokenizer st = new StringTokenizer(txtATexto1.getText(), "\n");
         String token;
         while (st.hasMoreTokens()) {
-            //JOptionPane.showMessageDialog(this,"Identificando Variables...");
             token = st.nextToken();
 
             if (token.matches(main2)) {
@@ -1066,43 +1055,51 @@ public class Ventana extends javax.swing.JFrame {
                 StringTokenizer tokin = new StringTokenizer(token, " \n");
                 while (tokin.hasMoreTokens()) {
                     String testo = "";
-                    testo = testo + txtATraducido.getText();
+                    testo = testo + txtATraducido.getText().trim();
                     tokinn = tokin.nextToken();
                     if (tokinn.contains("BEGIN")) {
-                        txtATraducido.setText(testo + "REM ");
+                        txtATraducido.setText(testo + "class ");
                     }
                     if (tokinn.matches(id) && tokinn.contains("BEGIN") == false && tokinn.contains("{") == false) {
-                        txtATraducido.setText("\nREM " + testo + tokinn + "");
+                        txtATraducido.setText("\nclass " + testo + tokinn + "{");
                     }
                     if (tokinn.contains("{")) {
-                        txtATraducido.setText(testo + " ;\n");
+                        txtATraducido.setText(testo + "\n");
                     }
                 }
-
             }
 
             if (token.matches(var)) {
                 String a = "";
                 a = txtATraducido.getText();
-                a = a + "DIM  ";
-                txtATraducido.setText(a);
+                //a = a + "DIM  ";
+                //txtATraducido.setText(a);
                 String tokinn = "";
                 StringTokenizer tokin = new StringTokenizer(token, " \n,;");
                 while (tokin.hasMoreTokens()) {
                     String testo = "";
-                    testo = testo + txtATraducido.getText();
+                    //testo = testo + txtATraducido.getText();
                     tokinn = tokin.nextToken();
 
                     if (tokinn.contains("NUM") || tokinn.contains("DNUM") || tokinn.contains("WORD")) {
                         String enteros = "";
                         if (tokinn.contains("NUM")) {
-                            enteros = " AS INTERGER";
+                            a = a + "int  ";
+                            txtATraducido.setText(a);
+                            testo = testo + txtATraducido.getText();
+                            enteros = ";";
                         }
                         if (tokinn.contains("DNUM")) {
-                            enteros = " AS DOUBLE";
+                            a = a + "float  ";
+                            txtATraducido.setText(a);
+                            testo = testo + txtATraducido.getText();
+                            enteros = ";";
                         }
                         if (tokinn.contains("WORD")) {
-                            enteros = " AS STRING";
+                            a = a + "string  ";
+                            txtATraducido.setText(a);
+                            testo = testo + txtATraducido.getText();
+                            enteros = ";";
                         }
 
                         int contador = 0;
@@ -1121,7 +1118,6 @@ public class Ventana extends javax.swing.JFrame {
                         }
                         txtATraducido.setText(testo + enteros + "\n");
                     }
-
                 }
             }
         }
@@ -1132,21 +1128,13 @@ public class Ventana extends javax.swing.JFrame {
         StringTokenizer st1 = new StringTokenizer(txtATexto1.getText(), "\n");
         String token1;
         while (st1.hasMoreTokens()) {
-            //JOptionPane.showMessageDialog(this,"Identificando Instrucciones...");
             token1 = st1.nextToken();
-            //JOptionPane.showMessageDialog(this,token1);
 
-            /*if(token1.matches(start2)){
-
-                String a=txtATraducido.getText()+"\nFOR ";
-                txtATraducido.setText(a);
-                StringTokenizer st2= new StringTokenizer(token1,"()");
-            }*/
             if (token1.matches(start3)) {
-                //JOptionPane.showMessageDialog(this,"Termina FOR");
                 String a = txtATraducido.getText() + "\nNEXT\n";
                 txtATraducido.setText(a);
             }
+
             if (token1.matches(when2)) {
                 StringTokenizer st2 = new StringTokenizer(token1, "()");
                 while (st2.hasMoreTokens()) { // poner primero por espacio con tokens y luego dentro de espacio hacer ciclo y hacer tokens por cada uno
@@ -1156,7 +1144,6 @@ public class Ventana extends javax.swing.JFrame {
                             StringTokenizer st3 = new StringTokenizer(tuken, "=");
                             while (st3.hasMoreTokens()) {
                                 String tuken2 = st3.nextToken();
-
                                 if (st3.hasMoreTokens() == true) {
                                     String a = txtATraducido.getText() + tuken2 + "=";
                                     txtATraducido.setText(a);
@@ -1164,7 +1151,6 @@ public class Ventana extends javax.swing.JFrame {
                                     String a = txtATraducido.getText() + tuken2;
                                     txtATraducido.setText(a);
                                 }
-
                             }
                         } else {
                             String a = txtATraducido.getText() + tuken;
@@ -1175,19 +1161,20 @@ public class Ventana extends javax.swing.JFrame {
                     if (tuken.contains("WHEN")) {
                         String a = txtATraducido.getText() + "\nWHILE ";
                         txtATraducido.setText(a);
-                        /*String loqueva=a+txtATraducido.getText()+" THEN";
-                        txtATraducido.setText(loqueva);*/
                     }
+
                     if (tuken.contains("{")) {
                         String a = txtATraducido.getText() + "\n";
                         txtATraducido.setText(a);
                     }
                 }
             }
+
             if (token1.matches(when3)) {
                 String a = txtATraducido.getText() + "\nWEND \n";
                 txtATraducido.setText(a);
             }
+
             if (token1.matches(it2)) {
                 StringTokenizer st2 = new StringTokenizer(token1, "()");
                 while (st2.hasMoreTokens()) { // poner primero por espacio con tokens y luego dentro de espacio hacer ciclo y hacer tokens por cada uno
@@ -1205,7 +1192,6 @@ public class Ventana extends javax.swing.JFrame {
                                     String a = txtATraducido.getText() + tuken2;
                                     txtATraducido.setText(a);
                                 }
-
                             }
                         } else {
                             String a = txtATraducido.getText() + tuken;
@@ -1216,24 +1202,26 @@ public class Ventana extends javax.swing.JFrame {
                     if (tuken.contains("IT")) {
                         String a = txtATraducido.getText() + "\nIF ";
                         txtATraducido.setText(a);
-                        /*String loqueva=a+txtATraducido.getText()+" THEN";
-                        txtATraducido.setText(loqueva);*/
                     }
+
                     if (tuken.contains("{")) {
                         String a = txtATraducido.getText() + " THEN\n";
                         txtATraducido.setText(a);
                     }
                 }
             }
+
             if (token1.matches(it3)) {
                 String a = txtATraducido.getText() + "\nEND IF \n";
                 txtATraducido.setText(a);
             }
+
             if (token1.matches(main3)) {
 
-                String c = txtATraducido.getText() + "\n";
+                String c = txtATraducido.getText() + "\n}\n";
                 txtATraducido.setText(c);
             }
+
             if (token1.matches(take)) {
                 StringTokenizer st2 = new StringTokenizer(token1, "()");
                 while (st2.hasMoreTokens()) {
@@ -1241,7 +1229,8 @@ public class Ventana extends javax.swing.JFrame {
                     if (tuken.contains("TAKE")) {
 
                         String a = txtATraducido.getText() + "\nINPUT  ";
-                        a = a.replace('#', '"');
+                        //a = a.replace("(#", "(\"");
+                        //a = a.replace("#)", "\")");
                         txtATraducido.setText(a);
                     }
                     if (tuken.contains("+")) {
@@ -1251,12 +1240,13 @@ public class Ventana extends javax.swing.JFrame {
                             tokesito = tuk.nextToken();
                             if (tuk.hasMoreTokens()) {
                                 String a = txtATraducido.getText() + tokesito + ",";
-                                a = a.replace('#', '"');
+                                //a = a.replace("(#", "(\"");
+                                //a = a.replace("#)", "\")");
                                 txtATraducido.setText(a);
                             } else {
                                 String a = txtATraducido.getText() + tokesito;
-                                a = a.replace('#', '"');
-
+                                //a = a.replace("(#", "(\"");
+                                //a = a.replace("#)", "\")");
                                 txtATraducido.setText(a);
                             }
                         }
@@ -1264,13 +1254,15 @@ public class Ventana extends javax.swing.JFrame {
 
                     if (tuken.contains(";")) {
                         String a = txtATraducido.getText() + "\n";
-                        a = a.replace('#', '"');
+                        //a = a.replace("(#", "(\"");
+                        //a = a.replace("#)", "\")");
                         txtATraducido.setText(a);
 
                     }
                     if (tuken.contains("TAKE") == false && tuken.contains("+") == false && tuken.contains(";") == false) {
                         String a = txtATraducido.getText() + tuken;
-                        a = a.replace('#', '"');
+                        //a = a.replace("(#", "(\"");
+                        //a = a.replace("#)", "\")");
                         txtATraducido.setText(a);
                     }
                 }
@@ -1281,10 +1273,9 @@ public class Ventana extends javax.swing.JFrame {
                 while (st2.hasMoreTokens()) {
                     String tuken = st2.nextToken();
                     if (tuken.contains("SEND")) {
-
-                        String a = txtATraducido.getText() + "\nPRINTF  ";
-                        a = a.replace('#', '"');
-
+                        String a = txtATraducido.getText() + "\nprintf ";
+                        a = a.replace("printf #", "printf (\"");
+                        a = a.replace("#", ")");
                         txtATraducido.setText(a);
                     }
                     if (tuken.contains("+")) {
@@ -1293,12 +1284,13 @@ public class Ventana extends javax.swing.JFrame {
                         while (tuk.hasMoreTokens()) {
                             tokesito = tuk.nextToken();
                             if (tuk.hasMoreTokens()) {
-                                String a = txtATraducido.getText() + tokesito + ",";
-                                a = a.replace('#', '"');
+                                String a = txtATraducido.getText() + tokesito + "\",";
+                                //a = a.replace("printf #", "printf (\"");
                                 txtATraducido.setText(a);
                             } else {
                                 String a = txtATraducido.getText() + tokesito;
-                                a = a.replace('#', '"');
+                                //a = a.replace("printf #", "printf (\"");
+                        //a = a.replace("#", "\")");
                                 txtATraducido.setText(a);
                             }
                         }
@@ -1306,12 +1298,14 @@ public class Ventana extends javax.swing.JFrame {
 
                     if (tuken.contains(";")) {
                         String a = txtATraducido.getText() + " \n";
-                        a = a.replace('#', '"');
+                        a = a.replace("printf #", "printf (\"");
+                        a = a.replace("#", ");");
                         txtATraducido.setText(a);
                     }
                     if (tuken.contains("SEND") == false && tuken.contains("+") == false && tuken.contains(";") == false) {
                         String a = txtATraducido.getText() + tuken;
-                        a = a.replace('#', '"');
+                        a = a.replace("printf #", "printf (\"");
+                        a = a.replace("#", ")");
                         txtATraducido.setText(a);
                     }
                 }
@@ -1323,7 +1317,7 @@ public class Ventana extends javax.swing.JFrame {
                 while (tuk.hasMoreTokens()) {
                     tokesito = tuk.nextToken();
                     String a = txtATraducido.getText() + tokesito + "\n";
-                    a = a.replace(';', ' ');
+                    //a = a.replace(';', ' ');
                     txtATraducido.setText(a);
                 }
 
@@ -1331,37 +1325,31 @@ public class Ventana extends javax.swing.JFrame {
 
             }
 
-            //ESTA COSA ES PARA EL CICLO FOR
-            if (token1.matches(start2)) { //Compara si esta el matches dentro del token
+            if (token1.matches(start2)) {
                 String tokesito = "";
                 String texto = "";
                 StringTokenizer tuk = new StringTokenizer(token1, "\\s");
                 while (tuk.hasMoreTokens()) {
                     tokesito = tuk.nextToken();
-                    String a = txtATraducido.getText() + "\n";//almacenoo todo
-                    tokesito = tokesito.replace("START", "FOR");//reemplazo
+                    String a = txtATraducido.getText() + "\n";
+                    tokesito = tokesito.replace("START", "FOR");
                     tokesito = tokesito.replaceAll(step, " ");
                     tokesito = tokesito.replace("{", "\n");
-                    texto += a + tokesito;//se guarda en el acumulador de lo reemplazado
+                    texto += a + tokesito;
                     txtATraducido.setText(texto);
-
                 }
-
                 JOptionPane.showMessageDialog(this, "Se encontro un ciclo for");
-
             }
-
-            //CICLO FOR
         }
     }                                           
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        HashMap <String,Integer> r = new HashMap<>();
-        HashMap <String,Integer> op = new HashMap<>();
-        HashMap <String,Integer> id = new HashMap<>();
-        HashMap <String,Integer> deli = new HashMap<>();
-        HashMap <String,Integer> num = new HashMap<>();
-        LinkedList <String> texto = new LinkedList<>();
+        HashMap<String, Integer> r = new HashMap<>();
+        HashMap<String, Integer> op = new HashMap<>();
+        HashMap<String, Integer> id = new HashMap<>();
+        HashMap<String, Integer> deli = new HashMap<>();
+        HashMap<String, Integer> num = new HashMap<>();
+        LinkedList<String> texto = new LinkedList<>();
 
         r.put("BEGIN", 0);
         r.put("END", 0);
@@ -1400,44 +1388,47 @@ public class Ventana extends javax.swing.JFrame {
         deli.put("}", 0);
         deli.put(")", 0);
         deli.put(",", 0);
-        deli.put("(",0);
+        deli.put("(", 0);
 
         DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"Token","Cantidad","Tipo"});
+        model.setColumnIdentifiers(new Object[]{"Token", "Cantidad", "Tipo"});
 
-        StringTokenizer st = new StringTokenizer(txtATexto1.getText(),"{}();,\"=+-*/><||&&# \n\t",true);
+        StringTokenizer st = new StringTokenizer(txtATexto1.getText(), "{}();,\"=+-*/><||&&# \n\t", true);
         String token, text = "";
-        while (st.hasMoreTokens()){
+        while (st.hasMoreTokens()) {
             token = st.nextToken();
-            if(!" ".equals(token) && !"\n".equals(token) && !"\t".equals(token)){
+            if (!" ".equals(token) && !"\n".equals(token) && !"\t".equals(token)) {
                 if (r.containsKey(token)) {
-                    r.put(token, r.get(token)+1);
-                }else {
+                    r.put(token, r.get(token) + 1);
+                } else {
                     if (op.containsKey(token)) {
-                        op.put(token, op.get(token)+1);
-                    }else {
-                        if (deli.containsKey(token)){
-                            deli.put(token, deli.get(token)+1);
-                            if("#".equals(token)){
+                        op.put(token, op.get(token) + 1);
+                    } else {
+                        if (deli.containsKey(token)) {
+                            deli.put(token, deli.get(token) + 1);
+                            if ("#".equals(token)) {
                                 token = st.nextToken();
-                                while (st.hasMoreTokens() && !"#".equals(token)){
+                                while (st.hasMoreTokens() && !"#".equals(token)) {
                                     text += token;
                                     token = st.nextToken();
                                 }
                                 texto.add(text);
-                                deli.put(token, deli.get(token)+1);
+                                deli.put(token, deli.get(token) + 1);
                                 text = "";
                             }
-                        }else {
+                        } else {
                             if (id.containsKey(token)) {
-                                id.put(token, id.get(token)+1);
-                            }else {
-                                if(token.matches("([0-9]*)|([0-9]*.[0-9]+)")) {
+                                id.put(token, id.get(token) + 1);
+                            } else {
+                                if (token.matches("([0-9]*)|([0-9]*.[0-9]+)")) {
                                     if (num.containsKey(token)) {
-                                        num.put(token, num.get(token)+1);
-                                    }else num.put(token, 1);
+                                        num.put(token, num.get(token) + 1);
+                                    } else {
+                                        num.put(token, 1);
+                                    }
+                                } else {
+                                    id.put(token, 1);
                                 }
-                                else id.put(token, 1);
                             }
                         }
                     }
@@ -1446,39 +1437,52 @@ public class Ventana extends javax.swing.JFrame {
         }
 
         Iterator<String> itr = r.keySet().iterator();
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             token = itr.next();
-            if(r.get(token) > 0)model.addRow(new Object[]{token, r.get(token),"Palabra Reservada"});
+            if (r.get(token) > 0) {
+                model.addRow(new Object[]{token, r.get(token), "Palabra Reservada"});
+            }
         }
         itr = op.keySet().iterator();
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             token = itr.next();
-            if(op.get(token) > 0) model.addRow(new Object[]{token, op.get(token),"Operador"});
+            if (op.get(token) > 0) {
+                model.addRow(new Object[]{token, op.get(token), "Operador"});
+            }
         }
         itr = deli.keySet().iterator();
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             token = itr.next();
-            if(deli.get(token) > 0) model.addRow(new Object[]{token, deli.get(token),"Delimitador"});
+            if (deli.get(token) > 0) {
+                model.addRow(new Object[]{token, deli.get(token), "Delimitador"});
+            }
         }
         itr = id.keySet().iterator();
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             token = itr.next();
-            if(id.get(token) > 0) model.addRow(new Object[]{token, id.get(token),"Identificador"});
+            if (id.get(token) > 0) {
+                model.addRow(new Object[]{token, id.get(token), "Identificador"});
+            }
         }
         itr = num.keySet().iterator();
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             token = itr.next();
-            if(num.get(token) > 0) {
-                if(token.matches("[0-9]+"))model.addRow(new Object[]{token, num.get(token),"Número"});
-                if(token.matches("[0-9]+.[0-9]+"))model.addRow(new Object[]{token, num.get(token),"Número Decimal"});
+            if (num.get(token) > 0) {
+                if (token.matches("[0-9]+")) {
+                    model.addRow(new Object[]{token, num.get(token), "Número"});
+                }
+                if (token.matches("[0-9]+.[0-9]+")) {
+                    model.addRow(new Object[]{token, num.get(token), "Número Decimal"});
+                }
             }
         }
         itr = texto.iterator();
-        while(itr.hasNext()){
-            model.addRow(new Object[]{itr.next(), "1","Texto"});
+        while (itr.hasNext()) {
+            model.addRow(new Object[]{itr.next(), "1", "Texto"});
 
         }
         tabla.setModel(model);
+        jButton2.setEnabled(true);
     }                                        
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -1487,7 +1491,10 @@ public class Ventana extends javax.swing.JFrame {
         Error.setText("");
         txtATraducido.setText("");
         btnTraducir.setEnabled(false);
-
+        jButton2.setEnabled(false);
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
     }                                        
 
     /**
@@ -1552,4 +1559,3 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JTextArea txtATraducido;
     // End of variables declaration                   
 }
-
